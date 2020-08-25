@@ -1,25 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, Fragment } from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
-function App() {
+// STYLES
+import { ThemeProvider } from 'styled-components';
+import { lightTheme, darkTheme, LIGHT, DARK } from './config/theme';
+import { GlobalStyles } from "./components/GlobalStyles";
+
+// COMPONENTS
+import Navbar from './components/Navbar';
+
+import routes from './routes'
+
+import { useDarkMode } from './customHooks/useDarkMode'
+
+const App = () => {
+
+  const [theme, themeToggler] = useDarkMode();
+
+  const themeMode = theme === LIGHT ? lightTheme : darkTheme;
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={themeMode}>
+      <Fragment>
+        <GlobalStyles />
+        <Router>
+          <Navbar themeToggler={themeToggler} theme={theme} />
+          <Switch>
+            {routes.map((route) => (
+              <Route
+                exact
+                key={route.path}
+                path={route.path}
+                component={route.component} />
+            ))}
+          </Switch>
+        </Router>
+      </Fragment>
+    </ThemeProvider>
   );
 }
 
