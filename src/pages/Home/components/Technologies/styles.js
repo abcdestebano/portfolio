@@ -13,7 +13,6 @@ export const TechnologiesContainerImage = styled.div`
   align-items: center;
   height: 100%;
   cursor: pointer;
-
 `
 export const TechnologyImage = styled.img`
   width: ${props => props.width};
